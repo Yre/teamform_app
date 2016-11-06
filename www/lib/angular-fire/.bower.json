@@ -1,0 +1,13 @@
+{
+  "name": "angularfire",
+  "_cacheHeaders": {
+    "Last-Modified": "Fri, 19 Aug 2016 21:18:11 GMT",
+    "Content-Length": "18231",
+    "Content-Type": "application/javascript"
+  },
+  "main": "index.js",
+  "_source": "https://cdn.firebase.com/libs/angularfire/2.0.2/angularfire.js",
+  "_target": "*",
+  "_originalSource": "https://cdn.firebase.com/libs/angularfire/2.0.2/angularfire.js",
+  "_direct": true
+}
