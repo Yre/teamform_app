@@ -1,12 +1,28 @@
 <ion-view view-title="EVENT">
   <ion-content>
     <ion-list>
-      <ion-item href="/#/dashboard/event/01">
-        Event 01
+      <ion-item ng-repeat="(myEventId, myEvent) in myEvents" ng-href="/#/dashboard/event/{{myEventId}}">
+          {{events.$getRecord(myEventId).eventInfo.name}}
       </ion-item>
-      <ion-item href="/#/dashboard/event/02">
-        Event 02
-      </ion-item>
+
     </ion-list>
+    <button class="button button-positive" ng-click="createEventDialog()">
+      Create an event
+    </button>
+
+    <h2> Search Event </h2>
+
+    <div class="list">
+      <label class="item item-input">
+        <input type="text" placeholder="First Name">
+      </label>
+      <label class="item item-input">
+        <input type="text" placeholder="Last Name">
+      </label>
+      <label class="item item-input">
+        <textarea placeholder="Comments"></textarea>
+      </label>
+    </div>
+
   </ion-content>
 </ion-view>
