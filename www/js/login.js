@@ -13,7 +13,7 @@ app.controller("loginController",
 
 			if (authData) {
 				console.log(authData);
-				$window.location.href = '/#/dashboard/home';
+				$window.location.href = '#/dashboard/home';
 			}
 			else console.log("signed out");
 		});
@@ -107,7 +107,7 @@ app.controller("signupCtrl",
 
 			if (authData) {
 				console.log(authData);
-				$window.location.href = '/#/dashboard/home';
+				$window.location.href = '#/dashboard/home';
 			}
 			else console.log("signed out");
 		});

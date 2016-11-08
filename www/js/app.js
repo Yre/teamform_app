@@ -5,10 +5,8 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 initalizeFirebase();
-//angular.module('mychat', ['ionic', 'firebase', 'angularMoment', 'mychat.controllers', 'mychat.services'])
 
-
-var app=angular.module('tfApp', ['ionic', 'firebase']);
+var app = angular.module('tfApp', ['ionic', 'firebase', 'tfApp.services']);
 
 app.factory("Auth", function($firebaseAuth){
   return $firebaseAuth();
@@ -31,60 +29,59 @@ app.run(function($ionicPlatform) {
 });
 
 app.config(function($stateProvider, $urlRouterProvider) {
-  
+  $urlRouterProvider
+    .otherwise('/');
+
   $stateProvider
   .state('login', {
     url: '/',
-    templateUrl: '/templates/login.html',
+    templateUrl: 'templates/login.html',
     controller: 'loginController'
 
   })
   .state('signup', {
     url: '/signup',
-    templateUrl: '/templates/sign_up.html',
+    templateUrl: 'templates/sign_up.html',
     controller: 'signupCtrl'
   })
   .state('dashboard', {
     url: '/dashboard',
-    templateUrl: '/templates/dashboard.html',
+    templateUrl: 'templates/dashboard.html',
     controller: 'dashboardCtrl'
   })
   .state('dashboard.home', {
     url: '/home',
-    templateUrl: '/templates/home.html',
+    templateUrl: 'templates/home.html',
     controller: 'homeCtrl'
   })
   .state('dashboard.event', {
     url: '/event',
-    templateUrl: '/templates/event.html',
+    templateUrl: 'templates/event.html',
     controller: 'eventCtrl'
   })
   .state('dashboard.eventDetail', {
     url: '/event/:eid',
-    templateUrl: '/templates/eventD.html',
+    templateUrl: 'templates/eventD.html',
     controller: 'eventDCtrl'
   })
   .state('dashboard.team', {
     url: '/event/:eid/team/:tid',
-    templateUrl: '/templates/team.html',
+    templateUrl: 'templates/team.html',
     controller: 'teamCtrl'        
   })
   .state('dashboard.notif', {
     url: '/notification',
-    templateUrl: '/templates/notification.html',
+    templateUrl: 'templates/notification.html',
     controller: 'notificationCtrl'        
   })
   .state('dashboard.request', {
     url: '/request',
-    templateUrl: '/templates/request.html',
+    templateUrl: 'templates/request.html',
     controller: 'requestCtrl'       
   })
   .state('dashboard.profile', {
     url: '/profile/:name',
-    templateUrl: '/templates/profile.html',
+    templateUrl: 'templates/profile.html',
     controller: 'profileCtrl'       
-  });
-  $urlRouterProvider.otherwise('/');
-
-           
+  })
 });
