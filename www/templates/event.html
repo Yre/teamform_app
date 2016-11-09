@@ -10,19 +10,23 @@
       Create an event
     </button>
 
-    <h2> Search Event </h2>
 
-    <div class="list">
+    <div class="list list-inset">
       <label class="item item-input">
-        <input type="text" placeholder="First Name">
-      </label>
-      <label class="item item-input">
-        <input type="text" placeholder="Last Name">
-      </label>
-      <label class="item item-input">
-        <textarea placeholder="Comments"></textarea>
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" placeholder="Search a team?" ng-model = "searchText">
       </label>
     </div>
+
+    <p>Search Restuls:</p>
+
+    <ion-list>
+      <a ng-repeat="Event in events | filter: {eventInfo: {name: searchText}}" 
+            ng-href="#/dashboard/event/{{Event.$id}}">
+          {{Event.eventInfo.name}}<br>
+      </a>
+
+    </ion-list>
 
   </ion-content>
 </ion-view>

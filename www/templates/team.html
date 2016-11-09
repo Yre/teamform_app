@@ -1,5 +1,67 @@
 <ion-view view-title="Team Page">
   <ion-content>
     <h1>Team Page</h1>
+    <h3> Teamname:  {{data.name}} </h3>
+    <div>{{name}}</div>
+    <div> {{data.desc}} </div>
+
+    <div>current people <span class="badge">{{members.length}}</span></div>
+    <div>people needed<span class="badge">{{data.max}}</span></div>
+
+    <h4>Team Tags</h4>
+    <ul ng-repeat="(key,value) in tags">
+      <li>{{key}}: {{value.num}} / {{value.need}}</li>
+    </ul>
+
+
+    <h4> Members </h4>
+        <!--{{members}}-->
+      <div class="">
+          <b>{{data.leader}}</b> is leader.
+      </div>
+
+      <ul ng-repeat="(key,value) in members">
+        <li>{{value}}</li>
+      </ul>
+
+      <h4>Notification board</h4>
+          <!-- {{announcements}} -->
+      <ul ng-repeat="x in announcements">
+          <li>{{x.content}} &nbsp; Date : {{x.timeStamp}}</li>
+      </ul>
+
+      <h4>Applications</h4>
+        <!-- {{applications}} -->
+      <ul ng-repeat="x in applications">
+          <li>{{x.$id}} : {{x.$value}}</li>
+      </ul>
+
+      <h4>Invitations</h4>
+          <!-- {{invitations}} -->
+      <ul ng-repeat="x in invitations">
+          <li>{{x.$id}} : {{x.$value}}</li>
+      </ul>
+
+
+
+<!-- Testing member functions -->
+  <button type="button" class="btn btn-danger" ng-click="addMember()">Join team</button>
+    <button type="button" class="btn btn-danger" ng-click="deleteMember()">Leave team</button>
+
+
+
+<!-- Testing tag functions -->
+          <button type = "button" class = "btn btn-default" data-toggle = "modal" data-target = "#myModal">add a tag</button>
+
+  <button type="button" class="btn btn-danger" ng-click="addApplication()">Add Application</button>
+  <button type="button" class="btn btn-danger" ng-click="deleteApplication()">Delete Application</button>
+  <button type="button" class="btn btn-danger" ng-click="addInvitation()">Add Invitation</button>
+  <button type="button" class="btn btn-danger" ng-click="deleteInvitation()">Delete Invitation</button>
+
+
+
+
+
+
   </ion-content>
 </ion-view>
