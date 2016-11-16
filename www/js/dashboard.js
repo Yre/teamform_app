@@ -10,9 +10,10 @@ app.controller("dashboardCtrl",
 			if (authData) console.log(authData);
 			else {
 				console.log("signed out");
-				$window.location.href = '#/';
+				$window.location.href = '/';
 			}
 		});
+
 
 		$scope.logout = function(){
 			Auth.$signOut().then(function(){
