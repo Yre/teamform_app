@@ -1,8 +1,40 @@
+// // var dialog;
+//         $scope.createEventDialog = function(){
+//             // dialog = ngDialog.open({
+//             //     template: 'templates/createEvent.html',
+//             //     className: 'ngdialog-theme-plain',
+//             //     scope: $scope
+//             // });
+
+// 			var myPopup = $ionicPopup.show({
+// 				templateUrl: 'templates/createEvent.html', //'<input type="password" ng-model="data.wifi">',
+// 				title: 'Create an event',
+// 				subTitle: 'Please use normal things',
+// 				scope: $scope,
+// 				// buttons: [
+// 				// { text: 'Cancel' },
+// 				// {
+// 				// 	text: '<b>Save</b>',
+// 				// 	type: 'button-positive',
+// 				// 	onTap: function(e) {
+// 				// 	if (!$scope.data.wifi) {
+// 				// 		//don't allow the user to close unless he enters wifi password
+// 				// 		e.preventDefault();
+// 				// 	} else {
+// 				// 		return $scope.data.wifi;
+// 				// 	}
+// 				// 	}
+// 				// }
+// 				// ]
+// 			});
+//         };
+
+
 //eventCtrl
 app.controller("eventCtrl", 
 
 	// Implementation the todoCtrl 
-	function($scope, Auth, $firebaseArray, $firebaseObject,Helper,ngDialog) {
+	function($scope, Auth, $firebaseArray, $firebaseObject, Helper, $ionicPopup) {
 		Auth.$onAuthStateChanged(function(authData){
             if (authData){
                 $scope.authData = authData;
@@ -40,23 +72,42 @@ app.controller("eventCtrl",
             searchName:""
         }
 
-
-
-
-        var dialog;
+        // var dialog;
+        var myPopup;
         $scope.createEventDialog = function(){
-            dialog = ngDialog.open({
-                template: 'templates/createEvent.html',
-                className: 'ngdialog-theme-plain',
-                scope: $scope
-            });
+            // dialog = ngDialog.open({
+            //     template: 'templates/createEvent.html',
+            //     className: 'ngdialog-theme-plain',
+            //     scope: $scope
+            // });
+
+			myPopup = $ionicPopup.show({
+				templateUrl: 'templates/createEvent.html', //'<input type="password" ng-model="data.wifi">',
+				title: 'Create an event',
+				subTitle: 'Please use normal things',
+				scope: $scope,
+				// buttons: [
+				// { text: 'Cancel' },
+				// {
+				// 	text: '<b>Save</b>',
+				// 	type: 'button-positive',
+				// 	onTap: function(e) {
+				// 	if (!$scope.data.wifi) {
+				// 		//don't allow the user to close unless he enters wifi password
+				// 		e.preventDefault();
+				// 	} else {
+				// 		return $scope.data.wifi;
+				// 	}
+				// 	}
+				// }
+				// ]
+			});
         };
 
 
-        var event = {};
         $scope.submit = function(){
 
-             event = {
+            var event = {
                 eventInfo:
                 {name:"",
                 ddl:"",
@@ -82,8 +133,8 @@ app.controller("eventCtrl",
 
             event.eventInfo.admin = $scope.authData.uid;
             Helper.createEvent($scope.authData.uid,event);
-
-            dialog.close();
+            myPopup.close();
+            //dialog.close();
 
 
 

@@ -1,7 +1,7 @@
 //teamCtrl
 app.controller("teamCtrl",
 	// Implementation the todoCtrl
-	function($scope, Auth, $firebaseArray, $firebaseObject, $stateParams, $filter, Helper, ngDialog, $state, $window) {
+	function($scope, Auth, $firebaseArray, $firebaseObject, $stateParams, $filter, Helper, $state, $window) {
 
 		$scope.form = {};
 		$scope.eventID = $stateParams.eid;
@@ -46,7 +46,7 @@ app.controller("teamCtrl",
 						//     $scope.inv = $firebaseObject(invref);
 						// });
 						// $scope.obj.$loaded().then(function(data){
-						//     if($scope.obj[$scope.eventID]===undefine
+						//     if($scope.obj[$scope.eventID]===undefined)
 						//         $scope.role="visitor";
 						//     else
 						//     {
@@ -57,7 +57,7 @@ app.controller("teamCtrl",
 						// })
 						eventref = firebase.database().ref('users/' + $scope.userData.uid + '/writable');
 
-// get the team id of team that user is in
+						// get the team id of team that user is in
 						teamref=firebase.database().ref('users/' + $scope.userData.uid + '/writable/' + $scope.eventID );
 						 			$scope.user_teamdata = $firebaseObject(teamref);
 
@@ -99,7 +99,6 @@ app.controller("teamCtrl",
 		var applicref = main_ref.child('applications');
 		var inviteref = main_ref.child('invitations')
 
-
 //get member
 		var ref = firebase.database().ref('events/' + $scope.eventID + '/teams/' + $scope.teamID + '/members');
 		$scope.members = $firebaseObject(ref);
@@ -129,19 +128,11 @@ app.controller("teamCtrl",
 		$scope.ApplyTeam = function(){
 			Helper.sendApplicationTo($scope.userData.uid, $scope.eventID, $scope.teamID);
 			window.alert("Your application is received");
-				// for (leaderuid in $scope.leader){
-				// 	Helper.pushNotificationTo(leaderuid, $scope.eventID, Helper.getUsername($scope.userData.uid) + " has applied for your team.")
-				// }
-				Helper.pushNotificationTo($scope.teamdata.leader, $scope.eventID, Helper.getUsername($scope.userData.uid) + " has applied for your team.")
-				// window.location.reload();
 		}
-
-
 		//
 		// $scope.updateMember = function(id,content){
 		// 	memref.child(id).update({
 		// 		uid: content
-
 		// 	});
 		// 	$scope.members = memberdata;
 		// }
@@ -152,7 +143,6 @@ app.controller("teamCtrl",
 				for (memberuid in $scope.teamdata.members){
 						Helper.pushNotificationTo(memberuid, $scope.eventID, Helper.getUsername(uid) +  " has been kicked off the team.");
 				}
-
 		}
 
 		$scope.QuitTeam = function(){
@@ -233,11 +223,12 @@ app.controller("teamCtrl",
 			}
 		}
 
-		var dialogue;
+		// var dialogue;
+		var myPopup;
 		$scope.changeTeamInfoDialogue = function(){
-				dialogue = ngDialog.open({
-						template: 'templates/changeTeamInfo.html',
-						className: 'ngdialog-theme-plain',
+				myPopup = $ionicPopup.open({
+						templateUrl: 'templates/changeTeamInfo.html',
+						title: 'Change team info',
 						scope: $scope
 				});
 
@@ -277,7 +268,7 @@ app.controller("teamCtrl",
 					// console.log("cccc");
 					$scope.ChangeTeamMax($scope.newTeaminfo.max);
 				}
-				dialogue.close();
+				myPopup.close();
 				// $state.reload();
 
 
@@ -286,11 +277,11 @@ app.controller("teamCtrl",
 		}
 
 
-		var dialogue;
+		var myPopup;
 		$scope.ManageTagDialogue = function(){
-				dialogue = ngDialog.open({
-						template: 'templates/manageTag.html',
-						className: 'ngdialog-theme-plain',
+				myPopup = $ionicPopup.open({
+						templateUrl: 'templates/manageTag.html',
+						Title: 'Manage tag',
 						scope: $scope
 				});
 		};

@@ -1,5 +1,21 @@
 <ion-view view-title="Notification">
   <ion-content>
-    <h1>Notifications:</h1>
+    <ul>
+      <li ng-repeat="(eid, myEvent) in myEvents">
+          <h3>Event: {{events.$getRecord(eid).eventInfo.name}}</h3>
+          <div ng-show="myEvent.notifications == null">No notifications!</div>
+          <ul>
+              <li ng-repeat="(nid,notification) in myEvent.notifications">
+                  <span ng-show="!notification.isRead">(Unread)</span>
+                  {{notification.content}}
+
+                  <span class="glyphicon glyphicon-ok" ng-show ="!notification.isRead" ng-click = "changeState(eid,nid)" aria-hidden="true"></span>
+
+
+              </li>
+          </ul>
+
+      </li>
+      </ul>
   </ion-content>
 </ion-view>
