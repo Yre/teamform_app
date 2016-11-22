@@ -1,3 +1,35 @@
+// // var dialog;
+//         $scope.createEventDialog = function(){
+//             // dialog = ngDialog.open({
+//             //     template: 'templates/createEvent.html',
+//             //     className: 'ngdialog-theme-plain',
+//             //     scope: $scope
+//             // });
+
+// 			var myPopup = $ionicPopup.show({
+// 				templateUrl: 'templates/createEvent.html', //'<input type="password" ng-model="data.wifi">',
+// 				title: 'Create an event',
+// 				subTitle: 'Please use normal things',
+// 				scope: $scope,
+// 				// buttons: [
+// 				// { text: 'Cancel' },
+// 				// {
+// 				// 	text: '<b>Save</b>',
+// 				// 	type: 'button-positive',
+// 				// 	onTap: function(e) {
+// 				// 	if (!$scope.data.wifi) {
+// 				// 		//don't allow the user to close unless he enters wifi password
+// 				// 		e.preventDefault();
+// 				// 	} else {
+// 				// 		return $scope.data.wifi;
+// 				// 	}
+// 				// 	}
+// 				// }
+// 				// ]
+// 			});
+//         };
+
+
 //eventCtrl
 app.controller("eventCtrl", 
 
@@ -41,6 +73,7 @@ app.controller("eventCtrl",
         }
 
         // var dialog;
+        var myPopup;
         $scope.createEventDialog = function(){
             // dialog = ngDialog.open({
             //     template: 'templates/createEvent.html',
@@ -48,7 +81,7 @@ app.controller("eventCtrl",
             //     scope: $scope
             // });
 
-			var myPopup = $ionicPopup.show({
+			myPopup = $ionicPopup.show({
 				templateUrl: 'templates/createEvent.html', //'<input type="password" ng-model="data.wifi">',
 				title: 'Create an event',
 				subTitle: 'Please use normal things',
@@ -92,7 +125,7 @@ app.controller("eventCtrl",
 
 
 
-            event.eventInfo.ddl = $scope.input.ddl.toJSON();
+            event.eventInfo.ddl = $scope.input.ddl.toString();
 
             event.eventInfo.isClosed = false;
             //console.log(event);
@@ -100,8 +133,8 @@ app.controller("eventCtrl",
 
             event.eventInfo.admin = $scope.authData.uid;
             Helper.createEvent($scope.authData.uid,event);
-
-            // dialog.close();
+            myPopup.close();
+            //dialog.close();
 
 
 
