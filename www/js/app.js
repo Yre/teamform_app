@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 initalizeFirebase();
 
-var app = angular.module('tfApp', ['ionic', 'firebase', 'tfApp.services']);
+var app = angular.module('tfApp', ['ionic', 'firebase', 'tfApp.services', /*'tc.chartjs'by yre*/]);
 
 app.factory("Auth", function($firebaseAuth){
   return $firebaseAuth();

@@ -2,19 +2,24 @@
   <ion-content>
     <!-- Basic Team Information -->
         <div>
-            <h3>
-              Teamname:  {{teamdata.name}}
-            </h3>
-            <button class="btn btn-primary" ng-click="changeTeamInfoDialogue()" ng-if="(myEvents[eventID] | role)=='leader' && (myEvents[eventID] | teamId)==teamID">Change Team info</button>
-            <h3 ng-if = "((myEvents[eventID] | role)=='leader' || (myEvents[eventID] | role)=='member')">{{myEvents[eventID] | role}} of team {{teams.$getRecord(user_teamdata.team ).name}} </h3>
-            <h3 ng-if="(myEvents[eventID] | role)=='tba' || (myEvents[eventID] | role)=='visitor'">{{myEvents[eventID] | role}}</h3>
+  			<h3>
+  				Teamname:  {{teamdata.name}}
+          <button class="btn btn-primary" ng-click="changeTeamInfoDialogue()" ng-if="(myEvents[eventID] | role)=='leader' && (myEvents[eventID] | teamId)==teamID">Change Team info</button>
+        </h3>
+        <!-- <h3 ng-if = "((myEvents[eventID] | role)=='leader' || (myEvents[eventID] | role)=='leader') && (myEvents[eventID] | teamId)==teamID">{{myEvents[eventID] | role}} in this team</h3> -->
+        <h3 ng-if = "((myEvents[eventID] | role)=='leader' || (myEvents[eventID] | role)=='member')">{{myEvents[eventID] | role}} of team {{teams.$getRecord(user_teamdata.team ).name}} </h3>
+        <h3 ng-if="(myEvents[eventID] | role)=='tba' || (myEvents[eventID] | role)=='visitor'">{{myEvents[eventID] | role}}</h3>
             <p>
               {{teamdata.desc}}
             </p>
+            <!-- {{alreadyApplied()}} -->
             <button type = "button" class = "btn btn-primary" ng-if="((myEvents[eventID] | role)=='tba' )&& !alreadyApplied()" ng-click = "ApplyTeam()">Apply for this team</button>
             <button type = "button" class = "btn btn-primary" disabled="disabled" ng-if="((myEvents[eventID] | role)=='tba' ) && alreadyApplied() " ng-click = "ApplyTeam()">Aleady Applied</button>
             <button type = "button" class = "btn btn-primary" ng-if="(myEvents[eventID] | role)=='member' && (myEvents[eventID] | teamId)==teamID" ng-click = "QuitTeam()">Quit this team</button>
             <button type = "button" class = "btn btn-primary" ng-if="(myEvents[eventID] | role)=='leader' && (myEvents[eventID] | teamId)==teamID" ng-click = "Change_Leader()">Change team leader</button>
+            <!-- <form class="form-search">
+  				<input class="input-medium search-query" type="text" /> <button type="submit" class="btn">Search</button>
+  			</form> -->
         </div>
         <!-- Members -->
 
@@ -31,6 +36,7 @@
               </div>
               <div>
                 <h6>Team Leader:</h6>
+
                 <a ng-href= "#/dashboard/profile/{{teamdata.leader}}">  {{users.$getRecord(teamdata.leader).readOnly.name}}</a>
                 <!--<ul ng-repeat="(id,uid) in leader">
                   <li>{{users.$getRecord(uid).readOnly.name}}
@@ -43,11 +49,12 @@
                   <!-- {{noSkillTags}} -->
                   <h3 class="">Tags</h3>
               </div>
+
               <div class=""> Skill Tags:
                 <div ng-if = "noSkillTags">
                   None
                 </div>
-                <ul ng-repeat="(name,value) in filterSkillTags(skilltags)">
+                <ul ng-repeat="(name,value) in filterSkillTags(skilltags)" ng-if = "!noSkillTags">
                     <li>{{name}} : {{value}}</li>
                 </ul>
               </div>
@@ -133,12 +140,20 @@
                     <button type="button" class="btn btn-default" ng-click="deleteAnnouncement(x.$id)"  ng-if="isDeletingTeamAnn && (myEvents[eventID] | role)=='leader'  && (myEvents[eventID] | teamId)==teamID">Delete</button>
                   </li>
                 </ul>
-                <button type = "button" class = "btn btn-default" data-toggle = "modal" data-target = "#myModal2"  ng-if="(myEvents[eventID] | role)=='leader'  && (myEvents[eventID] | teamId)==teamID">Post an announcement</button>
-                <button type = "button" class = "btn btn-default" ng-click = "deleteTeamAnnouncementChoice()" ng-if="(myEvents[eventID] | role)=='leader'  && (myEvents[eventID] | teamId)==teamID">Delete announcements</button>
+                <button class="btn btn-default" ng-click="addAnnouncementDialogue()" ng-if="(myEvents[eventID] | role)=='leader' && (myEvents[eventID] | teamId)==teamID">Post an announcement</button>
+            <button type = "button" class = "btn btn-default" ng-click = "deleteTeamAnnouncementChoice()" ng-if="(myEvents[eventID] | role)=='leader'  && (myEvents[eventID] | teamId)==teamID">Delete announcements</button>
               </div>
             </div>
 
-
+  
+              <!--<div class="panel-heading">
+                //by yre 
+                <h3 class="panel-title"></h3>
+              </div>
+              <div class="panel-body" ng-init = "initchart()">
+    <canvas id="myChart" width="200" height="200"></canvas>
+              </div>-->
+  
 
         <!-- Modal for add announcements-->
         <!--<div class = "modal fade" id = "myModal2" role = "dialog">
