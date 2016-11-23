@@ -1,4 +1,3 @@
-<h1>Change Event Form</h1>
 <form name="EditEventForm" novalidate>
     <h3>To change info of this event, please fill in following infomation</h3>
     <div class="form-group">
@@ -32,6 +31,7 @@
 
 
     <input class="btn btn-primary" type="button" value="submit" ng-click="EditEventForm.$valid && changeEventInfo()">
+    <input class="btn btn-primary" type="button" value="Cancel" ng-click="closePopup()">
 
     <div role="alert">
         <span class="error" ng-show="EditEventForm.ddl.$error.date">

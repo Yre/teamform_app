@@ -116,6 +116,9 @@ app.controller("eventDCtrl",
                 scope: $scope
 			});
         };
+        $scope.closePopup = function(){
+			myPopup.close();
+		}
         $scope.newTeam={
             max: 0,
             name: "",

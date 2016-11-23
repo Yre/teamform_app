@@ -1,4 +1,3 @@
-<h1>Manage Tags</h1>
 <form>
 	<h3>Skill Tags</h3>
   <ul ng-repeat="(name,content) in skilltags">
@@ -27,6 +26,6 @@
 	<br>
   <button type = "button" class = "btn btn-primary" ng-click = "modifyMannerTagsChoice()">Modify Manner Tags</button>
   <button type = "button" class = "btn btn-primary" ng-if = "modifyMannerTags" ng-click = "changeMannerTags()">Confirm changes</button>
-
+  <button class="btn btn-primary" ng-click="closePopup()">Cancel</button>
 
 </form>

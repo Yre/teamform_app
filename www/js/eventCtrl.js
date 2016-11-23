@@ -103,7 +103,9 @@ app.controller("eventCtrl",
 				// ]
 			});
         };
-
+        $scope.closePopup = function(){
+			myPopup.close();
+		}
 
         $scope.submit = function(){
 

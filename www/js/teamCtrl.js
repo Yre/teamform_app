@@ -281,10 +281,13 @@ app.controller("teamCtrl",
 		$scope.ManageTagDialogue = function(){
 				myPopup = $ionicPopup.show({
 						templateUrl: 'templates/manageTag.html',
-						Title: 'Manage tag',
+						title: 'Manage tag',
 						scope: $scope
 				});
 		};
+		$scope.closePopup = function(){
+			myPopup.close();
+		}
 
 //get skill tags
 		var ref = firebase.database().ref('events/' + $scope.eventID + '/teams/' + $scope.teamID + '/tags/SkillTags');
