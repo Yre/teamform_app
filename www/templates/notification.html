@@ -1,8 +1,11 @@
 <ion-view view-title="Notification">
   <ion-content>
-    <ul>
-      <li ng-repeat="(eid, myEvent) in myEvents">
-          <h3>Event: {{events.$getRecord(eid).eventInfo.name}}</h3>
+    <ion-list>
+      <div ng-repeat="(eid, myEvent) in myEvents">
+        <div class="item item-divider">
+            Event: {{events.$getRecord(eid).eventInfo.name}}
+        </div>
+          
           <div ng-show="myEvent.notifications == null">No notifications!</div>
           <ul>
               <li ng-repeat="(nid,notification) in myEvent.notifications">
@@ -17,7 +20,7 @@
               </li>
           </ul>
 
-      </li>
-      </ul>
+      </div>
+      </ion-list>
   </ion-content>
 </ion-view>

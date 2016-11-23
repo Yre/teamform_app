@@ -46,18 +46,18 @@
       	<hr>
       	<!--###Content###-->       	
 				<div class="thumbnail caption" ng-repeat="(eid, myEvent) in filterEvent(myEventList, search_model)">
-					<a class="btn btn-primary btn-block" type="button" ng-href="/#/dashboard/event/{{Event.$id}}" style="text-align:left">
+					<a class="btn btn-primary btn-block" type="button" ng-href="#/dashboard/event/{{Event.$id}}" style="text-align:left">
 						{{allEvents.$getRecord(eid).eventInfo.name}}
 					</a>
 					<span ng-show="myEvent.applications == null && myEvent.invitations == null">(No request)</span>					
 					<div ng-repeat="(teamKey, tid) in myEvent.applications">
-						Application in progress: <a ng-href = "/#/dashboard/event/{{eid}}/team/{{tid}}">{{allEvents.$getRecord(eid).teams[tid].name}}</a>.				
+						Application in progress: <a ng-href = "#/dashboard/event/{{eid}}/team/{{tid}}">{{allEvents.$getRecord(eid).teams[tid].name}}</a>.				
 						<button class="btn btn-danger btn-sm" ng-click="withdrawApp(eid, tid)" data-toggle="tooltip" data-placement="bottom" title="Withdraw the application">
 				    	<i class="icon-undo"></i>
 				    </button>
 					</div> <!--ng-repeat-->						
 					<div ng-repeat="(teamKey, tid) in myEvent.invitations">
-						Invitation from: <a ng-href = "/#/dashboard/event/{{eid}}/team/{{tid}}">{{allEvents.$getRecord(eid).teams[tid].name}}</a>.
+						Invitation from: <a ng-href = "#/dashboard/event/{{eid}}/team/{{tid}}">{{allEvents.$getRecord(eid).teams[tid].name}}</a>.
 						<button class="btn btn-danger btn-sm" ng-click="acceptInvi(eid, tid)" data-toggle="tooltip" data-placement="bottom" title="Accept the invitation">
 				    	<i class="icon-ok-sign"></i>
 				    </button>
