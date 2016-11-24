@@ -1,32 +1,35 @@
 <ion-view view-title="EVENT">
   <ion-content>
     <ion-list>
+      <div class="item item-divider">
+        My events
+      </div>
       <ion-item ng-repeat="(myEventId, myEvent) in myEvents" ng-href="#/dashboard/event/{{myEventId}}">
           {{events.$getRecord(myEventId).eventInfo.name}}
       </ion-item>
 
     </ion-list>
-    <button class="button button-positive" ng-click="createEventDialog()">
+    <button class="button button-positive button-block" ng-click="createEventDialog()">
       Create an event
     </button>
 
-
+    <div class="item item-divider">
+       Search events
+    </div>
     <div class="list list-inset">
       <label class="item item-input">
         <i class="icon ion-search placeholder-icon"></i>
         <input type="text" placeholder="Search a team?" ng-model = "searchText">
       </label>
     </div>
-
-    <p>Search Restuls:</p>
-
+    
     <ion-list>
-      <a ng-repeat="Event in events | filter: {eventInfo: {name: searchText}}" 
+      <ion-item a ng-repeat="Event in events | filter: {eventInfo: {name: searchText}}" 
             ng-href="#/dashboard/event/{{Event.$id}}">
           {{Event.eventInfo.name}}<br>
-      </a>
+      </ion-item>
 
     </ion-list>
-
+    
   </ion-content>
 </ion-view>

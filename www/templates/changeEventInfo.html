@@ -1,4 +1,3 @@
-<h1>Change Event Form</h1>
 <form name="EditEventForm" novalidate>
     <h3>To change info of this event, please fill in following infomation</h3>
     <div class="form-group">
@@ -8,7 +7,7 @@
 
     <div class="form-group">
         <label><span style="font: red;">New Deadline: </label>
-        <input class="form-control" name="ddl" ng-model="newEventInfo.ddl" placeholder="yyyy-mm-dd" type="date" required>
+        <input class="form-control" name="ddl" ng-model="newEventInfo.ddl" ng-init="newEventInfo.ddl=$filter('stringToDate')(eventObj.eventInfo.ddl)" type="date" required>
         <!--{{eventObj.eventInfo.ddl}},,,
         {{Date.parse("EEE, MMM dd yyyy hh:mm:ss +5",eventObj.eventInfo.ddl)}}
         {{SimpleDateFormat("yyyy-MM-dd ").parse("2015-10-06")}}  -->
@@ -32,6 +31,7 @@
 
 
     <input class="btn btn-primary" type="button" value="submit" ng-click="EditEventForm.$valid && changeEventInfo()">
+    <input class="btn btn-primary" type="button" value="Cancel" ng-click="closePopup()">
 
     <div role="alert">
         <span class="error" ng-show="EditEventForm.ddl.$error.date">

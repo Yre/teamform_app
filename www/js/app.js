@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 initalizeFirebase();
 
-var app = angular.module('tfApp', ['ionic', 'firebase', 'tfApp.services']);
+var app = angular.module('tfApp', ['ionic', 'firebase', 'tfApp.services', /*'tc.chartjs'by yre*/]);
 
 app.factory("Auth", function($firebaseAuth){
   return $firebaseAuth();
@@ -80,7 +80,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     controller: 'requestCtrl'       
   })
   .state('dashboard.profile', {
-    url: '/profile/:name',
+    url: '/profile/:uid',
     templateUrl: 'templates/profile.html',
     controller: 'profileCtrl'       
   })

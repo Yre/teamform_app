@@ -1,21 +1,26 @@
 <ion-view view-title="Notification">
   <ion-content>
-    <ul>
-      <li ng-repeat="(eid, myEvent) in myEvents">
-          <h3>Event: {{events.$getRecord(eid).eventInfo.name}}</h3>
+    <ion-list>
+      <div ng-repeat="(eid, myEvent) in myEvents">
+        <div class="item item-divider">
+            Event: {{events.$getRecord(eid).eventInfo.name}}
+        </div>
+          
           <div ng-show="myEvent.notifications == null">No notifications!</div>
           <ul>
               <li ng-repeat="(nid,notification) in myEvent.notifications">
                   <span ng-show="!notification.isRead">(Unread)</span>
                   {{notification.content}}
-
-                  <span class="glyphicon glyphicon-ok" ng-show ="!notification.isRead" ng-click = "changeState(eid,nid)" aria-hidden="true"></span>
+                <!--<i class="icon ion-search placeholder-icon"></i>-->
+                <i class = "icon icon ion-checkmark-round" ng-show ="!notification.isRead" ng-click = "changeState(eid,nid)"></i>
+                  <!--<span class="glyphicon glyphicon-ok" ng-show ="!notification.isRead" ng-click = "changeState(eid,nid)" aria-hidden="true"></span>-->
+                  <!--<ion-icon ng-show ="!notification.isRead" ng-click = "changeState(eid,nid)" name="checkmark" aria-hidden="true"></ion-icon>-->
 
 
               </li>
           </ul>
 
-      </li>
-      </ul>
+      </div>
+      </ion-list>
   </ion-content>
 </ion-view>

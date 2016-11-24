@@ -116,6 +116,9 @@ app.controller("eventDCtrl",
                 scope: $scope
 			});
         };
+        $scope.closePopup = function(){
+			myPopup.close();
+		}
         $scope.newTeam={
             max: 0,
             name: "",
@@ -333,5 +336,15 @@ app.filter('teamId', function(){
             //console.log(obj.team);
             return obj.team;
         }
+    }
+});
+
+
+app.filter('stringToDate', function($filter){
+    return function(obj) {
+        date = new Date();
+        date.setTime(Date.parse(obj));
+        // return $filter('date')(date,"yyyy-MM-dd");
+        return date;
     }
 });

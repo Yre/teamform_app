@@ -11,23 +11,37 @@
             </form>
             <hr>
             <!--<tt>model = {{search_model}}</tt><br/> -->
-            <ul>
-                <li ng-repeat="(eid, myEvent) in myEventList">
-                    <h4>{{allEvents.$getRecord(eid).eventInfo.name}}</h4>
-                    <ul>
-                        <li ng-repeat="(teamKey, tid) in myEvent.applications">
+                <div ng-repeat="(eid, myEvent) in myEventList in filterEvent(myEventList, search_model)">
+                    <div ng-show="myEvent.applications == null && myEvent.invitations == null">No requests!</div>
+                    <div class="card">
+                        <div class="item item-divider" ng-show="myEvent.applications">
+                            <h3>Applications to 
+                                <a ng-href = "#/dashboard/event/{{eid}}/">
+                                <!--<button class="button button-clear">-->
+                                    {{allEvents.$getRecord(eid).eventInfo.name}}
+                                <!--</button>-->
+                                </a>
+                            </h3>
+                        </div>
+                        <div class="item item-text-wrap" ng-repeat="(teamKey, tid) in myEvent.applications">
                             You are currently applying for the team <span><a ng-href = "#/dashboard/event/{{eid}}/team/{{tid}}">{{allEvents.$getRecord(eid).teams[tid].name}}</a></span>. 
-                            <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="withdrawApp(eid, tid)"></span>
-                        </li>
-
-                        <li ng-repeat="(teamKey, tid) in myEvent.invitations">
+                            <!--<span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="withdrawApp(eid, tid)"></span>-->
+                            <i aria-hidden="true" ng-click="withdrawApp(eid, tid)"class="icon ion-close-round"></i>
+                        </div>
+                        <div class="item item-divider" ng-show="myEvent.invitations">
+                            <h3>invitation from 
+                                <a ng-href = "#/dashboard/event/{{eid}}/">{{allEvents.$getRecord(eid).eventInfo.name}}</a>
+                            </h3>
+                        </div>
+                        <div class="item item-text-wrap" ng-repeat="(teamKey, tid) in myEvent.invitations">
                             Team <span><a ng-href = "#/dashboard/event/{{eid}}/team/{{tid}}">{{allEvents.$getRecord(eid).teams[tid].name}}</a></span> has sent you an invitation. 
-                            <span class="glyphicon glyphicon-ok" aria-hidden="true" ng-click="acceptInvi(eid, tid)"></span>
-                            <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="declineInvi(eid, tid)"></span>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+                            <!--<span class="glyphicon glyphicon-ok" aria-hidden="true" ng-click="acceptInvi(eid, tid)"></span>-->
+                            <i aria-hidden="true" ng-click="acceptInvi(eid, tid)" class="icon ion-checkmark-round"></i>
+                            <!--<span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="declineInvi(eid, tid)"></span>-->
+                            <i aria-hidden="true" ng-click="declineInvi(eid, tid)" class="icon ion-close-round"></i>
+                        </div>
+                    </div>
+                </div>
         </div>
     </div>
 
