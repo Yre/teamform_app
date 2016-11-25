@@ -34,6 +34,30 @@
           <li><input type="checkbox" name="Creative" value={{profile_info.tags.MannerTags.Creative}} ng-model="profile_info.tags.MannerTags.Creative"  ng-disabled=profile_readOnly />Creative</li>
         </ul>
         <li><label>Skill:</label></li>
+        <div class="list">
+          <label class="item item-input item-stacked-label range range-positive">
+            <span class="input-label">JavaScript</span>
+            <input type="range" name="volume" min="0" max="100" value="33">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">First Name</span>
+            <input type="text" placeholder="John">
+          </label>
+          <div class="item range range-positive">
+            HTML:<input type="range" name="volume" min="0" max="100" value="33">
+          </div>
+          
+      </div>
+      
+      <ion-list>
+        <ion-item>
+          <ion-range min="0" max="100" [(ngModel)]="saturation" color="secondary">
+            <ion-label range-left>0</ion-label>
+            <ion-label range-right>100</ion-label>
+          </ion-range>
+        </ion-item>
+      </ion-list>
+
         <ul style="list-style-type:none">
           <li><label>JavaScript:</label><input name="JavaScript" type = "number" value={{profile_info.tags.SkillTags.JavaScript}}  ng-readonly = "profile_readOnly" ng-model = "profile_info.tags.SkillTags.Javascript"></li>
           <li><label>HTML:</label><input name="HTML" type = "number" value={{profile_info.tags.SkillTags.HTML}}  ng-readonly = "profile_readOnly" ng-model = "profile_info.tags.SkillTags.HTML"></li>
