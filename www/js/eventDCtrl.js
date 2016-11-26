@@ -2,7 +2,7 @@
 app.controller("eventDCtrl",
 
     // Implementation the todoCtrl
-    function($scope, Auth, $firebaseArray, $firebaseObject, $stateParams, $filter, Helper, /*ngDialog,*/ $state,$ionicPopup) {
+    function($scope, Auth, $firebaseArray, $firebaseObject, $stateParams, $filter, Helper, /*ngDialog,*/ $state,$ionicPopup, $window) {
         console.log("event detail");
 
         //initialize
@@ -14,6 +14,7 @@ app.controller("eventDCtrl",
         $scope.editingInfo=false;
         // $scope.editButton="Edit";
         $scope.isDeletingAnn = false;
+        $scope.recommandTeams = [];
         this.Object=Object;
         Auth.$onAuthStateChanged(function(authData) {
             // console.log($scope.obj);
@@ -27,10 +28,18 @@ app.controller("eventDCtrl",
                 $scope.myEvents = $firebaseObject(ref);
                 ref = firebase.database().ref("users/" + $scope.userData.uid + "/writable/"+$scope.eventID);
                 $scope.myEvent = $firebaseObject(ref);
-                $scope.myEvent.$loaded().then(function(data){
-                    console.log("Test");
-                    console.log(data);
-                });
+                $scope.myEvents.$loaded().then(function(data){
+                    $scope.myEvent.$loaded().then(function(data){
+                        if($scope.myEvents[$scope.eventID]!==undefined)
+                        {
+                            loginDate = new Date();
+                            $scope.myEvent.lastLogin = loginDate.toString();
+                            $scope.myEvent.$save();
+                        }
+
+                    });
+                })
+                
                 // $scope.myEvents.$loaded().then(function(){
                 //     //console.log($filter('teamId')($scope.myEvents[$scope.eventID]));
                 //     invref = firebase.database().ref('events/' + $scope.eventID + "/teams/" + $filter('teamId')($scope.myEvents[$scope.eventID]) + "/invitations");
@@ -73,9 +82,14 @@ app.controller("eventDCtrl",
             Helper.deleteTeam($scope.eventID,key);
         };
         $scope.addToTeam = function(id){
-            $scope.selectTeam=!$scope.selectTeam;
-            personToBeAdded=id;
-
+            if ($scope.selectTeam && personToBeAdded != id){
+                personToBeAdded=id; 
+            }
+            else
+            {
+                $scope.selectTeam=!$scope.selectTeam;   
+                personToBeAdded=id;              
+            }
         }
         $scope.toTeam=function(key){
             Helper.addPersonToTeam(personToBeAdded,$scope.eventID,key);
@@ -83,7 +97,7 @@ app.controller("eventDCtrl",
             console.log(key);
         }
         $scope.deleteAnn = function(key){
-            Helper.deleteEventAnnouncement($scope.eventID,key)
+            Helper.deleteEventAnnouncement($scope.eventID,key);
             console.log(key + " been deleted");
         }
         $scope.invite=function(uid){
@@ -95,7 +109,9 @@ app.controller("eventDCtrl",
 
         }
         $scope.joinEvent=function(){
-            Helper.joinEvent($scope.userData.uid,$scope.eventID);
+            Helper.joinEvent($scope.userData.uid,$scope.eventID).then(function(){
+                $window.location.reload();
+            });
             // $scope.role="tba";
         }
 
@@ -304,47 +320,37 @@ app.controller("eventDCtrl",
                     console.log(uid);
             }
         }
-        
+
+        $scope.recommend = function(){
+            console.log("***")
+            for( key in $scope.eventObj.teams)
+                if($scope.eventObj.teams.hasOwnProperty(key))
+                {
+                    temp = $scope.eventObj.teams[key];
+                    temp.key = key;
+                    $scope.recommandTeams.push(temp)
+                }
+            for( index in $scope.recommandTeams )
+            {
+                $scope.recommandTeams[index].score = calscore($scope.recommandTeams[index].tags)
+            }
+            console.log($scope.recommandTeams)
+        }
+
+        calscore = function(teamTags, langScore = 1, mannerScore = 2, skillScore = 3){
+            score = 0;
+            userTags = $scope.users[$scope.userData.uid].readOnly.info.tags;
+            for( key in userTags.LanguageTags )
+                if( userTags.LanguageTags[key] && teamTags.LanguageTags[key] )
+                    score += langScore;
+            for( key in userTags.MannerTags )
+                if( userTags.MannerTags[key] && teamTags.MannerTags[key] )
+                    score += mannerScore;
+            for( key in userTags.SkillTags )
+                if( teamTags.SkillTags[key]!=0 && userTags.SkillTags[key]>=teamTags.SkillTags[key] )
+                    score += skillScore;
+            return score;
+        }
     }
 );
 
-app.filter('numKeys', function() {
-    return function(json) {
-        if(json===undefined)
-            return 0;
-        var keys = Object.keys(json)
-        return keys.length;
-    }
-});
-
-app.filter('role', function(){
-    return function(obj) {
-        if (obj === undefined){
-            return 'visitor';
-        }
-        else
-            return obj.position;
-    }
-});
-
-app.filter('teamId', function(){
-    return function(obj) {
-        if (obj == undefined){
-            return null;
-        }
-        else{
-            //console.log(obj.team);
-            return obj.team;
-        }
-    }
-});
-
-
-app.filter('stringToDate', function($filter){
-    return function(obj) {
-        date = new Date();
-        date.setTime(Date.parse(obj));
-        // return $filter('date')(date,"yyyy-MM-dd");
-        return date;
-    }
-});
