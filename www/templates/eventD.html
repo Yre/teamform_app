@@ -1,59 +1,157 @@
-<ion-view view-title="Event details">
-  <ion-content>
-    <h1>{{eventObj.eventInfo.name}}</h1>
-    <h3>{{myEvents[eventID] | role}}</h3>
-    <h4 ng-if="!editingInfo">Event info:{{eventObj.eventInfo.desc}}</h4>
-    <h4>Team size: [{{eventObj.eventInfo.min}}, {{eventObj.eventInfo.max}}]</h4>
-    <h4>Team forming deadline: <span style="color: red;">{{ eventObj.eventInfo.ddl | stringToDate | date: 'yyyy-MM-dd'}}</span></h4>
-    <!--<textarea ng-model="eventObj.eventInfo.desc" ng-if="editingInfo" ng-value="eventObj.eventInfo.desc"></textarea>-->
-    <button class="btn btn-primary" ng-click="editInfo()" ng-if="myEvent.position=='admin'">Edit Info</button>
+<ion-view cache-view="false">
+    <ion-nav-title> {{eventObj.eventInfo.name}} </ion-nav-title>
+  <ion-content class="padding">
+      <div class="list card">
+        <div class="item item-divider">
+            <div class="row row-center">
+                <div class="col">
+                    <font size="4"><i class="icon ion-clipboard"></i>    <b>Event Information<b></font>
+                </div>
+                <div class="col text-right">
+                    <button class = "button button-clear button-dark" ng-click="editInfo()" ng-if="myEvent.position=='admin'">
+                        <i class="icon ion-compose"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <span class="item">
+            <h4 style="color: grey;">Event Name</h4>
+            {{eventObj.eventInfo.name}}
+        </span>
+        <span class="item">
+            <h4 style="color: grey;">Role</h4>
+            {{myEvents[eventID] | role}}
+        </span>
+        <span class="item">
+            <h4 style="color: grey;">Event info</h4>
+            <span ng-if="!editingInfo">{{eventObj.eventInfo.desc}}</span>
+        </span>
+        <span class="item">
+            <h4 style="color: grey;">Team size</h4>
+            {{eventObj.eventInfo.min}} ~ {{eventObj.eventInfo.max}}
+        </span>
+        <span class="item">
+            <h4 style="color: grey;">Team forming deadline</h4>
+            <span style="color: red;">{{ eventObj.eventInfo.ddl | stringToDate | date: 'yyyy-MM-dd'}}</span>
+        </span>
+    </div>
 
-    <!-- <h1 ng-if="(myEvent | role)=='admin'">testing</h1> -->
-    <div ng-if="!(myEvent===undefined)">
-        <button class="btn btn-primary" ng-click="manage()" ng-if="myEvent.position=='admin'">Manage</button>
-    </div>
+    <ion-list ng-if=" (myEvent | role)=='leader' || (myEvent | role)=='member'">
+        <ion-item menu-close ng-href="#/dashboard/event/{{eventID}}/team/{{myEvent.team}}"  class="item-icon-right">
+            <h4 style="color: grey;">My team</h4>
+            <h3>{{eventObj.teams[myEvent.team].name}}</h3><i class="icon ion-arrow-right-b"></i>
+        </ion-item>
+    </ion-list>
+
+
     <br>
-    <div ng-if=" (myEvent | role)=='leader' || (myEvent | role)=='member' ">
-        <h3>My team: <a ng-href="#/dashboard/event/{{eventID}}/team/{{myEvent.team}}">{{eventObj.teams[myEvent.team].name}}</a><h3>
-    </div>
-    <br>
-    <div class="panel panel-default">
-        <h2 class="panel-title">Teams</h2></div>
-        <ion-list>
-            <ion-item ng-repeat="(key, team) in eventObj.teams" ng-href="#/dashboard/event/{{eventID}}/team/{{key}}">
-                {{team.name}}
-                <span class="text-right">({{team.currentSize}}/{{team.max}})</span>
-                <button class="btn btn-primary" ng-click="deleteTeam(key)" ng-if="isManaging">delete</button>
-                <button class="btn btn-primary" ng-click="toTeam(key)" ng-if="isManaging && selectTeam">addTo</button>
-            </ion-item>
-        </ion-list>
-        
-    <div/>
-    <br>
-    <div class="panel panel-default">
-        <div class="panel-heading"><h2 class="panel-title">TBA</h2></div>
-        <div class="panel-body">
-            <div ng-repeat="(key, name) in eventObj.tba">
-                {{users[name].readOnly.name}}
-                <button class="btn btn-primary"  ng-click="addToTeam(name)" ng-if="isManaging">addToTeam</button>
-                <button class="btn btn-primary"  ng-click="invite(name)" ng-if="(myEvent | role)=='leader' && validInvite(name)">invite</button>
+
+    
+    <ion-list>
+        <div class="item item-divider">
+            <div class="row row-center">
+                <span class="icon-left col">
+                    <font size="4"><i class="icon ion-person-stalker"></i>    <b>Teams</b></font>
+                </span>
+                <div class="col text-right">
+                    <button class="button button-dark button-small no-padding" ng-click="manage()"  ng-if="!(myEvent===undefined) && myEvent.position=='admin'">
+                        <i class="icon ion-gear-b"></i>
+                    </button>
+                </div>
             </div>
         </div>
-    <div/>
-    <div class="panel panel-default">
-        <div class="panel-heading"><h2 class="panel-title">Announcments</h2></div>
-        <div class="panel-body">
-            <div ng-repeat="(key, name) in eventObj.eventInfo.announcements">
-                {{name.content}}
-                <button class="btn btn-primary"  ng-click="deleteAnn(key)" ng-if="isDeletingAnn && (myEvent | role)=='admin'">Delete</button>
+
+        <ion-item ng-repeat="(key, team) in eventObj.teams" ng-href="#/dashboard/event/{{eventID}}/team/{{key}}">
+            <div class="row row-center">
+                {{team.name}}<font class="text-right" color= "LightSteelBlue">&nbsp;&nbsp;&nbsp;({{team.currentSize}}&nbsp;/&nbsp;{{team.max}})</font>
+                <button class="button button-assertive button-small" ng-click="deleteTeam(key)" ng-if="isManaging && !selectTeam">
+                    <i class="icon ion-close-round"></i>
+                </button>
+                <button class="button button-assertive button-small" ng-click="toTeam(key)" ng-if="isManaging && selectTeam">
+                    <i class="icon ion-ios-plus"></i>
+                </button>
+            </div>
+            <span ng-repeat="(tagKey, tagContent) in eventObj.teams[key].tags.SkillTags" ng-if="tagContent.value != 0">
+				<button class="button button-small" style="color:white" ng-style="{backgroundColor:tagContent.color}">{{tagKey}}</button>
+			</span>
+        </ion-item>
+    </ion-list>
+
+    <br>
+
+    <ion-list ng-if="(myEvents[eventID] | role)=='tba'">
+        <div class="item item-divider">
+            <div class="row row-center">
+                <div class="col">
+                    <font size="4"><i class="icon ion-thumbsup"></i>    <b>Recommendation</b></font>
+                </div>
+                <div class="col">
+                    <button class="button button-assertive button-small" ng-click="recommend()">
+                        <i class="icon ion-thumbsup"></i>&nbsp;&nbsp;Let's GO!
+                    </button>
+                </div>
             </div>
         </div>
-    <div/>
-    <button class="btn btn-primary" ng-click="createTeamDialogue()" ng-if="(myEvent | role)=='tba'">createTeam</button>
-    <button class="btn btn-primary" ng-click="quit()" ng-if="(myEvent | role)=='tba'">Quit Event</button>
-    <button class="btn btn-primary" ng-click="createAnnouncementDialogue()" ng-if="(myEvent | role)=='admin'">post an announcement</button>
-    <button class="btn btn-primary" ng-click="deleteAnnouncementChoice()" ng-if="(myEvent | role)=='admin'">delete an announcement</button>
-    <button class="btn btn-primary" ng-click="joinEvent()" ng-if="(myEvents[eventID] | role)=='visitor'">Join Event</button>
+        <ion-item ng-repeat="team in recommandTeams | orderBy: 'score': true" ng-href="#/dashboard/event/{{eventID}}/team/{{team.key}}">
+            {{team.name}} [{{team.score}}]
+            <font color= "LightSteelBlue">&nbsp;&nbsp;&nbsp;({{team.currentSize}}&nbsp;/&nbsp;{{team.max}})</font>
+        </ion-item>
+    </ion-list>
+	
+    <br>
+
+    <ion-list>
+        <div class="item item-divider">
+            <div class="row row-center">
+                <span class="icon-left col">
+                    <font size="4"><i class="icon ion-ios-people"></i>    <b>TBAs</b></font>
+                </span>
+            </div>
+        </div>
+        <ion-item ng-repeat="(key, name) in eventObj.tba">
+            <div class="row row-center">
+                <a ng-href="#/dashboard/profile/{{name}}">
+                    {{users[name].readOnly.name}}
+                </a>
+                <button class="button button-assertive button-small"  ng-click="addToTeam(name)" ng-if="isManaging">
+                    <i class="icon ion-plus-circled"></i>
+                </button>
+                <button class="button button-balanced button-small"  ng-click="invite(name)" ng-if="(myEvent | role)=='leader' && validInvite(name)">Invite</button>
+            </div>
+        </ion-item>
+    </ion-list>
+
+    <br>
+    
+    <div class="card list">
+        <div class="item item-divider">
+            <div class="row row-center">
+                <span class="icon-left col">
+                    <font size="4"><i class="icon ion-speakerphone"></i>    <b>Announcments</b></font>
+                </span>
+                <div class="col text-right">
+                    <button class="button button-positive button-small" ng-click="createAnnouncementDialogue()" ng-if="(myEvent | role)=='admin'">
+                        <i class="icon ion-compose"></i>
+                    </button>
+                    <button class="button button-assertive button-small" ng-click="deleteAnnouncementChoice()" ng-if="(myEvent | role)=='admin'">
+                        <i class="icon ion-ios-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="item" ng-repeat="(key, name) in eventObj.eventInfo.announcements">
+            <button class="button button-assertive button-small"  ng-click="deleteAnn(key)" ng-if="isDeletingAnn && (myEvent | role)=='admin'">
+                <i class="icon ion-minus-round"></i>
+            </button>
+            {{name.content}}
+            <h4 style="color: grey;">{{name.timeStamp | stringToDate | date: 'yyyy-MM-dd hh:mm'}}</h4>
+        </div>
+    </div>
+
+    <button class="button button-positive " ng-click="createTeamDialogue()" ng-if="(myEvent | role)=='tba'">createTeam</button>
+    <button class="button button-assertive" ng-click="quit()" ng-if="(myEvent | role)=='tba'">Quit Event</button>
+    <button class="button button-positive" ng-click="joinEvent()" ng-if="(myEvents[eventID] | role)=='visitor'">Join Event</button>
     <br><br><br><br>
 <!--<h1>Debug</h1>-->
 <!--<button class="btn btn-primary" ng-click="createEventList(userData)">createEventList</button>--><!--    

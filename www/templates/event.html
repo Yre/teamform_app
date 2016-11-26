@@ -5,7 +5,7 @@
         My events
       </div>
       <ion-item ng-repeat="(myEventId, myEvent) in myEvents" ng-href="#/dashboard/event/{{myEventId}}">
-          {{events.$getRecord(myEventId).eventInfo.name}}
+          {{events.$getRecord(myEventId).eventInfo.name}} ({{myEvent.position}})
       </ion-item>
 
     </ion-list>

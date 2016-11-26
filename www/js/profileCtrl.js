@@ -2,7 +2,7 @@
 app.controller("profileCtrl", 
 
 	// Implementation the todoCtrl 
-	function($scope, Auth, $firebaseArray, $firebaseObject,$window, $stateParams,Helper) {
+	function($scope, Auth, $firebaseArray, $firebaseObject,$window, $stateParams,Helper,$ionicPopup) {
 		Auth.$onAuthStateChanged(function(authData){
 			//initialize
 			if (authData) {
@@ -10,7 +10,11 @@ app.controller("profileCtrl",
 				ref = firebase.database().ref("users/"+$stateParams.uid+"/readOnly/info");
 				$scope.profile_info = $firebaseObject(ref);
 				$scope.profile_readOnly = true;
-				$scope.profile_info.tags = Helper.tags;
+				// r_ref = firebase.database().ref("users/"+$stateParams.uid+"/readOnly");
+				// fobj = $firebaseObject(r_ref);
+				// $scope.profile_info.email = fobj.email
+				// $scope.profile_info.name = fobj.name
+				//$scope.profile_info.tags = Helper.tags;
 				//$scope.profile_info.tag.c++=false;
 				var id = $stateParams.uid;
 				if (id != $scope.authData.uid)  $scope.button_visible = false;
@@ -35,5 +39,16 @@ app.controller("profileCtrl",
 				$scope.button_name = "EDIT";
 			}
 		};
+		var myPopup;
+		$scope.profile_edit = function(){
+			myPopup = $ionicPopup.show({
+				templateUrl: 'templates/manageProfileTag.html', 
+				title: 'Edit your profile',
+                scope: $scope
+			});
+		};
+		$scope.closePopup = function(){
+			myPopup.close();
+		}
 	}
 );
