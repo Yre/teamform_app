@@ -3,26 +3,16 @@
   <ion-content class="padding">
       <div class="list card">
         <div class="item item-divider">
-            <div class="row">
-                <div class="col col-75">
-                    Event Information
-                    <!--<button class="button button-small button-light">Search</button>-->
-                </div>
+            <div class="row row-center">
                 <div class="col">
-                    <button class="button button-dark button-small button-clear" ng-click="editInfo()" ng-if="myEvent.position=='admin'">
-                        <!--<i class="icon ion-ios-cog"></i>-->
+                    Event Information
+                </div>
+                <div class="col text-right">
+                    <button class = "button button-outline button-positive button-small" ng-click="editInfo()" ng-if="myEvent.position=='admin'">
                         Edit
                     </button>
                 </div>
             </div>
-            <!--<h2 class="title">
-                <button class="button button-dark button-small button-clear" ng-click="editInfo()" ng-if="myEvent.position=='admin'">
-                    <!--<i class="icon ion-ios-cog"></i>-->
-                    <!--Edit
-                </button>-->
-            </h2>-->
-            
-        </button>
         </div>
         <a href="#" class="item item-icon-left">
             <i class="icon ion-home"></i><h2>{{eventObj.eventInfo.name}}</h2>
