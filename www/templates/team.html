@@ -1,182 +1,233 @@
-<ion-view view-title="{{data.name}} Page">
-  <ion-content>
-    <!-- Basic Team Information -->
-        <div>
-  			<h3>
-  				Teamname:  {{teamdata.name}}
-          <button class="btn btn-primary" ng-click="changeTeamInfoDialogue()" ng-if="(myEvents[eventID] | role)=='leader' && (myEvents[eventID] | teamId)==teamID">Change Team info</button>
-        </h3>
-        <!-- <h3 ng-if = "((myEvents[eventID] | role)=='leader' || (myEvents[eventID] | role)=='leader') && (myEvents[eventID] | teamId)==teamID">{{myEvents[eventID] | role}} in this team</h3> -->
-        <h3 ng-if = "((myEvents[eventID] | role)=='leader' || (myEvents[eventID] | role)=='member')">{{myEvents[eventID] | role}} of team {{teams.$getRecord(user_teamdata.team ).name}} </h3>
-        <h3 ng-if="(myEvents[eventID] | role)=='tba' || (myEvents[eventID] | role)=='visitor'">{{myEvents[eventID] | role}}</h3>
-            <p>
-              {{teamdata.desc}}
-            </p>
-            <!-- {{alreadyApplied()}} -->
-            <button type = "button" class = "btn btn-primary" ng-if="((myEvents[eventID] | role)=='tba' )&& !alreadyApplied()" ng-click = "ApplyTeam()">Apply for this team</button>
-            <button type = "button" class = "btn btn-primary" disabled="disabled" ng-if="((myEvents[eventID] | role)=='tba' ) && alreadyApplied() " ng-click = "ApplyTeam()">Aleady Applied</button>
-            <button type = "button" class = "btn btn-primary" ng-if="(myEvents[eventID] | role)=='member' && (myEvents[eventID] | teamId)==teamID" ng-click = "QuitTeam()">Quit this team</button>
-            <button type = "button" class = "btn btn-primary" ng-if="(myEvents[eventID] | role)=='leader' && (myEvents[eventID] | teamId)==teamID" ng-click = "Change_Leader()">Change team leader</button>
-            <!-- <form class="form-search">
-  				<input class="input-medium search-query" type="text" /> <button type="submit" class="btn">Search</button>
-  			</form> -->
-        </div>
-        <!-- Members -->
-
-              <div class="">
-                  <h3 class="">Members &nbsp; Max:{{teamdata.max}}, current:{{teamdata.currentSize}}</h3>
-              </div>
-              <div class="">
-                <ul ng-repeat="(id,uid) in filterLeader(members,teamdata.leader)">
-                    <li> <a ng-href= "#/dashboard/profile/{{uid}}">{{users.$getRecord(uid).readOnly.name}}</a>
-                      <button type = "button" class = "btn btn-primary" ng-if="(myEvents[eventID] | role)=='leader' && (myEvents[eventID] | teamId)==teamID" ng-click = "DeleteMember(uid)">Reject</button>
-                      <button type = "button" class = "btn btn-primary" ng-if="(myEvents[eventID] | role)=='leader' && leader_change && (myEvents[eventID] | teamId)==teamID" ng-click = "SetLeader(uid)">Select as new leader</button>
-                    </li>
-                </ul>
-              </div>
-              <div>
-                <h6>Team Leader:</h6>
-
-                <a ng-href= "#/dashboard/profile/{{teamdata.leader}}">  {{users.$getRecord(teamdata.leader).readOnly.name}}</a>
-                <!--<ul ng-repeat="(id,uid) in leader">
-                  <li>{{users.$getRecord(uid).readOnly.name}}
-                  </li>
-                </ul>-->
-              </div>
-          <!-- Tags -->
-            <div class="">
-              <div class="">
-                  <!-- {{noSkillTags}} -->
-                  <h3 class="">Tags</h3>
-              </div>
-
-              <div class=""> Skill Tags:
-                <div ng-if = "noSkillTags">
-                  None
+<ion-view cache-view="false">
+  <ion-nav-title> {{data.name}} Page </ion-nav-title>
+  <ion-content class="padding">
+    <div class="list card">
+        <div class="item item-divider">
+            <div class="row row-center">
+                <div class="col">
+                    <font size="4"><i class="icon ion-clipboard"></i>    <b>Team Information<b></font>
                 </div>
-                <ul ng-repeat="(name,value) in filterSkillTags(skilltags)" ng-if = "!noSkillTags">
-                    <li>{{name}} : {{value}}</li>
-                </ul>
-              </div>
-              <<!-- {{noLanguageTags}} -->
-              <div class="panel-body"> Language Tags:
-                <div ng-if = "noLanguageTags">
-                  None
+                <div class="col text-right">
+                    <button class = "button button-clear button-dark" ng-click="changeTeamInfoDialogue()" ng-if="(myEvents[eventID] | role)=='leader' && (myEvents[eventID] | teamId)==teamID">
+                        <i class="icon ion-compose"></i>
+                    </button>
                 </div>
-                <ul ng-repeat="(name,value) in filterLanguageTags(languagetags)">
-                    <li>{{name}}</li>
-                </ul>
-              </div>
-              <!-- {{noMannerTags}} -->
-              <div class="panel-body"> Manner Tags:
-                <div ng-if = "noMannerTags">
-                  None
-                </div>
-                <ul ng-repeat="(name,value) in filterMannerTags(mannertags)">
-                    <li>{{name}}</li>
-                </ul>
-              </div>
-              <div class="">
-                  <!-- <button type = "button" class = "btn btn-default" data-toggle = "modal" data-target = "#myModal">add a skill tag</button> -->
-                  <button type = "button" class = "btn btn-default" ng-click="ManageTagDialogue()"  ng-if="(myEvents[eventID] | role)=='leader' && (myEvents[eventID] | teamId)==teamID">Manage team tags</button>
-              </div>
             </div>
+        </div>
+        <span class="item">
+            <h4 style="color: grey;">Team Name</h4>
+            {{teamdata.name}}
+        </span>
+        <span class="item" ng-href="#/dashboard/profile/{{teamdata.leader}}">
+            <h4 style="color: grey;">Team leader</h4>
+            {{users.$getRecord(teamdata.leader).readOnly.name}}
+        </span>
+        <span class="item">
+            <h4 style="color: grey;">Team info</h4>
+            <span ng-if="!editingInfo">{{teamdata.desc}}</span>
+        </span>
+        <span class="item" ng-if = "(myEvents[eventID] | teamId)==teamID || (myEvents[eventID] | role)=='tba' || (myEvents[eventID] | role)=='admin'">
+            <h4 style="color: grey;">Role</h4>
+            {{myEvents[eventID] | role}} 
+        </span>
+        <!--<span class="item" ng-if="(myEvents[eventID] | role)=='tba' || (myEvents[eventID] | role)=='visitor'">
+            <h4 style="color: grey;">Role</h4>
+            {{myEvents[eventID] | role}}
+        </span>-->
+        <span class="item">
+            <h4 style="color: grey;">Team size</h4>
+            {{teamdata.currentSize}} / {{teamdata.max}}
+        </span>
+        
+    </div>
+    
+    <!-- Basic Team Information -->
+    <button class = "button button-positive button-block" ng-if="((myEvents[eventID] | role)=='tba' )&& !alreadyApplied()" ng-click = "ApplyTeam()">Apply for this team</button>
+    <button class = "button button-positive button-outline button-block" ng-click="Change_Leader()" ng-if="(myEvents[eventID] | role)=='leader' && (myEvents[eventID] | teamId)==teamID">Change team leader</button>
+
+    <!-- Members -->
+    <ion-list>
+        <div class="item item-divider">
+            <div class="icon-left">
+                <font size="4"><i class="icon ion-person-stalker"></i>    <b>Members</b>    </font>
+            </div>
+        </div>      
+        <ion-item ng-repeat="(id,uid) in filterLeader(members,teamdata.leader)" ng-href= "#/dashboard/profile/{{uid}}">
+            <div class="row row-center">
+                {{users.$getRecord(uid).readOnly.name}}
+                <button class="button button-assertive button-small" ng-click="DeleteMember(uid)" ng-if="(myEvents[eventID] | role)=='leader' && (myEvents[eventID] | teamId)==teamID">
+                    <i class="icon ion-close-round"></i>
+                </button>
+                <button class="button button-assertive button-small" ng-click="SetLeader(uid)" ng-if="(myEvents[eventID] | role)=='leader' && leader_change && (myEvents[eventID] | teamId)==teamID">
+                    <i class="icon ion-ios-plus"></i>
+                </button>
+            </div>
+        </ion-item>
+    </ion-list>
 
 
-          <!-- Applications -->
+    <br>
+    <!-- Tags -->
+              
+    <ion-list>
+        <div class="item item-divider">
+            <div class="row row-center">
+                <span class="icon-left col">
+                    <font size="4"><i class="icon ion-ios-pricetag"></i>    <b>Tags</b></font>
+                </span>
+                <div class="col text-right">
+                    <button class="button button-dark button-clear" ng-click="ManageTagDialogue()" ng-if="(myEvents[eventID] | role)=='leader' && (myEvents[eventID] | teamId)==teamID" >
+                        <i class="icon ion-compose"></i>
+                    </button>
+                    <!--<button class="button button-assertive button-small" ng-click="deleteAnnouncementChoice()" ng-if="(myEvent | role)=='admin'">
+                        <i class="icon ion-ios-trash"></i>
+                    </button>-->
+                </div>
+            </div>
+        </div>        
+        <div class="item item-text-wrap">
+          <button class="button button-royal button-small">Skill</button>
+          <span ng-repeat="(name,content) in filterSkillTags(skilltags)">
+                <!--<button class="btn btn-xs btn-default" ng-style="{backgroundColor:content.color}" ng-if="content.value">{{name}} [{{content.value}}]</button>-->
+                <button class="button button-royal button-small" ng-if="content.value && content.color=='red'">{{name}} [{{value}}]</button>
+                <button class="button button-royal button-small button-outline" ng-if="content.value && content.color=='green'">{{name}} [{{value}}]</button>
+          </span>
+        </div>
+        <div class="item item-text-wrap">
+          <button class="button button-energized button-small">Language</button>
+          <span ng-repeat="(name,value) in filterLanguageTags(languagetags)">
+              <button class="button button-energized button-small button-outline">{{name}}</button>
+          </span>
+        </div>
+        <div class="item item-text-wrap">
+          <button class="button button-assertive button-small">Manner</button>
+          <span ng-repeat="(name,value) in filterMannerTags(mannertags)">
+              <button class="button button-assertive button-small button-outline">{{name}}</button>
+          </span>
+        </div>
+    </ion-list>
 
+    <br>
 
-          <div ng-if="((myEvents[eventID] | role)=='leader' ||(myEvents[eventID] | role)=='member')  && (myEvents[eventID] | teamId)==teamID">
-              <div class="">
-                <h3 class="">Applications</h3>
-              </div>
-              <form name="myForm" >
-                  <label for="repeatSelect"> Search applications by status: </label>
-                  <select name="repeatSelect" id="repeatSelect" ng-model="search_model">
-                      <option value = "all">All applications</option>
-                      <option ng-repeat="(key, status) in statusList" value="{{status}}">{{status}}</option>
-                  </select>
-              </form>
-              <div class="">
-                <ul ng-repeat="(uid,status) in filterByStatus(applications,search_model)">
-                  <li>
-                    {{users.$getRecord(uid).readOnly.name}} : {{status}}
-                    <button type="button" class="btn btn-primary" ng-click="accept_Application(uid)" ng-if = "(myEvents[eventID] | role)=='leader' &&  status == 'pending'  && (myEvents[eventID] | teamId)==teamID">Accept</button>
-                    <button type="button" class="btn btn-primary" ng-click="decline_Application(uid)" ng-if = "(myEvents[eventID] | role)=='leader' &&  status == 'pending'  && (myEvents[eventID] | teamId)==teamID">Reject</button>
-                  </li>
-                </ul>
+    <!-- Applications -->
+          
+    <ion-list ng-if="(myEvents[eventID] | role)=='leader' && (myEvents[eventID] | teamId)==teamID" >
+        <div class="item item-divider">
+          <span class="icon-left col">
+              <font size="4"><i class="icon ion-ios-clipboard"></i>    <b>Applications</b></font>
+          </span>
+
+        </div>
+        <ion-item>
+          <form name="myForm">
+              <label class="item item-input item-select">
+                <div class="input-label">
+                  Status
+                </div>
+                <select name="repeatSelect" id="repeatSelect" ng-model="search_model_appli">
+                  <option selected value = "all">All applications</option>
+                  <option ng-repeat="(key, status) in statusList" value="{{status}}">{{status}}</option>
+                </select>
+              </label>
+          </form>
+        </ion-item>
+
+      <ion-item ng-repeat="(uid,status) in filterByStatus(applications,search_model_appli)">
+        <div class="row row-center">
+          <a class="icon-left col" href= "#/dashboard/profile/{{uid}}">{{users.$getRecord(uid).readOnly.name}} : {{status}}</a> 
+          <div class="col text-right">
+            <button class="button button-balanced button-small" ng-click="accept_Application(uid)" ng-if = "(myEvents[eventID] | role)=='leader' &&  status == 'pending'  && (myEvents[eventID] | teamId)==teamID" data-toggle="tooltip" data-placement="bottom" title="Accept the application">
+              <i class="icon ion-checkmark-round"></i>
+            </button>
+            <button class="button button-assertive button-small" ng-click="decline_Application(uid)" ng-if = "(myEvents[eventID] | role)=='leader' &&  status == 'pending'  && (myEvents[eventID] | teamId)==teamID" data-toggle="tooltip" data-placement="bottom" title="Decline the application">
+              <i class="icon ion-close-round"></i>
+            </button>
+          </div>
+        </div>
+      </ion-item>
+    </ion-list>
+          
+    <br>
+      <!-- Invitations -->
+      <ion-list ng-if="(myEvents[eventID] | role)=='leader' && (myEvents[eventID] | teamId)==teamID" >
+          <div class="item item-divider">
+            <span class="icon-left col">
+                <font size="4"><i class="icon ion-ios-clipboard"></i>    <b>Invitations</b></font>
+            </span>
+          </div>
+          <ion-item>
+            <form name="myForm">
+                <label for="repeatSelect"> Search invitations by status: </label>
+                <select name="repeatSelect" id="repeatSelect" ng-model="search_model_invi">
+                  <option selected value = "all">All invitations</option>
+                  <option ng-repeat="(key, status) in statusList" value="{{status}}">{{status}}</option>
+                </select>
+                </label>
+            </form>
+          </ion-item>
+
+        <ion-item ng-repeat="(uid,status) in filterByStatus(invitations,search_model_invi)">
+          <div class="row row-center">
+            <a class="icon-left col" href= "#/dashboard/profile/{{uid}}">{{users.$getRecord(uid).readOnly.name}} : {{status}}</a>
+          </div>
+        </ion-item>
+      </ion-list>
+          
+      <br>
+
+      <!-- Announcements -->
+
+        <div class="card list">
+          <div class="item item-divider">
+              <div class="row row-center">
+                  <span class="icon-left col">
+                      <font size="4"><i class="icon ion-speakerphone"></i>    <b>Announcments</b></font>
+                  </span>
+                  <div class="col text-right">
+                      <button class="button button-positive button-small" ng-click="addAnnouncementDialogue()" ng-if="(myEvents[eventID] | role)=='leader'  && (myEvents[eventID] | teamId)==teamID">
+                          <i class="icon ion-compose"></i>
+                      </button>
+                      <button class="button button-assertive button-small" ng-click="deleteTeamAnnouncementChoice()" ng-if="(myEvents[eventID] | role)=='leader'  && (myEvents[eventID] | teamId)==teamID">
+                          <i class="icon ion-ios-trash"></i>
+                      </button>
+                  </div>
               </div>
           </div>
-          <!-- Invittions -->
-          <div class="" ng-if="(myEvents[eventID] | role)=='leader' ||(myEvents[eventID] | role)=='member' && (myEvents[eventID] | teamId)==teamID " >
-            <div class="">
-              <div class="">
-                <h3 class="">Invitations</h3>
-              </div>
-              <form name="myForm">
-                  <label for="repeatSelect"> Search invitations by status: </label>
-                  <select name="repeatSelect" id="repeatSelect" ng-model="search_model">
-                      <option value = "all">All invitations</option>
-                      <option ng-repeat="(key, status) in statusList" value="{{status}}">{{status}}</option>
-                  </select>
-              </form>
-              <div class="">
-                <ul ng-repeat="(uid,status) in filterByStatus(invitations,search_model)">
-                  <li>{{users.$getRecord(uid).readOnly.name}} : {{status}}</li>
-                </ul>
-              </div>
-            </div>
-          </div>-->
-          <!-- Announcements -->
 
-            <div class="">
-              <div class="">
-                <h3 class=""> Notification Board</h3>
-              </div>
-              <div class="">
-                <ul ng-repeat="x in announcements">
-                  <li>
-                    {{x.content}} &nbsp; Date : {{x.timeStamp | DateFormat | date:'yyyy-MM-dd HH:mm' }}
-                    <button type="button" class="btn btn-default" ng-click="deleteAnnouncement(x.$id)"  ng-if="isDeletingTeamAnn && (myEvents[eventID] | role)=='leader'  && (myEvents[eventID] | teamId)==teamID">Delete</button>
-                  </li>
-                </ul>
-                <button class="btn btn-default" ng-click="addAnnouncementDialogue()" ng-if="(myEvents[eventID] | role)=='leader' && (myEvents[eventID] | teamId)==teamID">Post an announcement</button>
-            <button type = "button" class = "btn btn-default" ng-click = "deleteTeamAnnouncementChoice()" ng-if="(myEvents[eventID] | role)=='leader'  && (myEvents[eventID] | teamId)==teamID">Delete announcements</button>
-              </div>
-            </div>
+          <div class="item" ng-repeat="x in announcements.slice().reverse()">
+              <button class="button button-assertive button-small"  ng-click="deleteAnnouncement(x.$id)" ng-if="isDeletingTeamAnn && (myEvents[eventID] | role)=='leader'  && (myEvents[eventID] | teamId)==teamID">
+                  <i class="icon ion-minus-round"></i>
+              </button>
+              {{x.content}}
+              <h4 style="color: grey;">{{x.timeStamp | DateFormat | date:'yyyy-MM-dd HH:mm' }}</h4>
+          </div>
+      </div>
+      <br>
 
-  
-              <!--<div class="panel-heading">
-                //by yre 
-                <h3 class="panel-title"></h3>
-              </div>
-              <div class="panel-body" ng-init = "initchart()">
-    <canvas id="myChart" width="200" height="200"></canvas>
-              </div>-->
-  
-
-        <!-- Modal for add announcements-->
-        <!--<div class = "modal fade" id = "myModal2" role = "dialog">
-            <div class = "">
-               Modal content
-              <div class = "">
-                <div class = "">
-                  <button type = "button" class = "close" data-dismiss = "modal">&times;</button>
-                  <h4 class = "">Please write the message</h4>
+      <!--Recommandation-->
+      <ion-list ng-if="(myEvents[eventID] | role)=='leader' && (myEvents[eventID] | teamId)==teamID" >
+        <div class="item item-divider">
+            <div class="row row-center">
+                <div class="col">
+                    <font size="4"><i class="icon ion-thumbsup"></i>    <b>Recommendation</b></font>
                 </div>
-                <div class = "">
-                  <form class = "">
-                    <div class = "">
-                        <label for = "name">Message to be anncounced:</label>
-                        <input type = "text" name = "name" ng-model = "form.announcementmsg" >
-                        <button class = "btn btn-primary" ng-click = "addAnnouncement(form.announcementmsg)" data-dismiss = "modal">Submit</button>
-                    </div>
-                  </form>
+                <div class="col">
+                    <button class="button button-assertive button-small" ng-click="recommend()">
+                        <i class="icon ion-thumbsup"></i>&nbsp;&nbsp;Let's GO!
+                    </button>
                 </div>
-              </div>
             </div>
-          </div>-->
+        </div>
+        <ion-item ng-repeat="(uid, score) in tba_featurelist">
+          <div class="row row-center">
+              <a ng-href="#/dashboard/event/{{eventID}}/team/{{team.key}}">{{users.$getRecord(uid).readOnly.name}} [{{score}}]</a>
+              <button class="button button-balanced button-small" ng-click="invite(uid)" ng-if="(myEvents[eventID] | role)=='leader' && validInvite(uid)">Invite</button>
+          </div>
+        </ion-item>
+    </ion-list>
 
-   
+
+          
+      <button type = "button" class = "button button-assertive button-block" ng-if="(myEvents[eventID] | role)=='member' && (myEvents[eventID] | teamId)==teamID" ng-click = "QuitTeam()">Quit this team</button>
   </ion-content>
 </ion-view>
