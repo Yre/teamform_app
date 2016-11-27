@@ -15,8 +15,22 @@ app.controller("notificationCtrl",
 
 		});
 
+		$scope.search_model = "all";
+
+        $scope.filterEvent = function(items, filter_model) {
+            var result = {};
+            angular.forEach(items, function(value, key) {
+                if (key == filter_model || filter_model == "all") {
+                    result[key] = value;
+                }
+            });
+            return result;
+        }
+
+
+
 		$scope.changeState = function(eid,nid){
-			helper.changeReadState($scope.authData.uid,eid,nid);
+			Helper.changeReadState($scope.authData.uid,eid,nid);
 
 		}
 
