@@ -322,7 +322,8 @@ app.controller("eventDCtrl",
         }
 
         $scope.recommend = function(){
-            console.log("***")
+            console.log("***");
+            $scope.recommandTeams=[];
             for( key in $scope.eventObj.teams)
                 if($scope.eventObj.teams.hasOwnProperty(key))
                 {
