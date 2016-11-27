@@ -1,26 +1,38 @@
 <ion-view view-title="Notification">
-  <ion-content>
-    <ion-list>
-      <div ng-repeat="(eid, myEvent) in myEvents">
-        <div class="item item-divider">
-            Event: {{events.$getRecord(eid).eventInfo.name}}
+  <ion-content ng-controller="notificationCtrl">
+    <!--<h4><i class="icon ion-speakerphone"></i>Notifications</h4>-->
+		    <form name="myForm">
+            <label for="repeatSelect">Notifications filter: </label>
+	          <select class="btn btn-danger" name="repeatSelect" id="repeatSelect" ng-model="search_model">
+	              <option value = "all">All events</option>
+	              <option ng-repeat="(eid, myEvent) in myEvents" value="{{eid}}">{{events.$getRecord(eid).eventInfo.name}}</option>
+	          </select>
+      	</form>    
+<!--ng-repeat="(eid, myEvent) in filterEvent(myEvents, search_model)"-->
+
+        <div ng-repeat="(eid, myEvent) in filterEvent(myEvents, search_model)">
+            <div ng-show="myEvent.notifications != null" class="card">
+                  <div class="item item-divider" ng-show="myEvent.notifications">
+                      <h3>Notification from <a href = "#/dashboard/event/{{eid}}/">{{allEvents.$getRecord(eid).eventInfo.name}}</a>
+                      </h3>
+                  </div>
+                  <div class="item item-text-wrap"  ng-repeat="(nid,notification) in myEvent.notifications" ng-show="myEvent.notifications != null"  >
+                      <!--<span ng-show="!notification.isRead">(Unread)</span>-->
+                      <span ng-if="!notification.isRead"><strong>{{notification.content}}</strong></span>
+                      <span ng-if="notification.isRead">{{notification.content}}</span>
+                      <button class="button button-assertive button-small" ng-show ="!notification.isRead" ng-click = "changeState(eid,nid)">
+                          <i class = "icon icon ion-checkmark-round"></i>
+                      </button>
+                  </div>
+            </div>
         </div>
-          
-          <div ng-show="myEvent.notifications == null">No notifications!</div>
-          <ul>
-              <li ng-repeat="(nid,notification) in myEvent.notifications">
-                  <span ng-show="!notification.isRead">(Unread)</span>
-                  {{notification.content}}
-                <!--<i class="icon ion-search placeholder-icon"></i>-->
-                <i class = "icon icon ion-checkmark-round" ng-show ="!notification.isRead" ng-click = "changeState(eid,nid)"></i>
-                  <!--<span class="glyphicon glyphicon-ok" ng-show ="!notification.isRead" ng-click = "changeState(eid,nid)" aria-hidden="true"></span>-->
-                  <!--<ion-icon ng-show ="!notification.isRead" ng-click = "changeState(eid,nid)" name="checkmark" aria-hidden="true"></ion-icon>-->
 
+                
+    <!--<div ng-repeat="(eid, myEvent) in filterEvent(myEvents, search_model)">
+        <div class="item item-divider" ng-href="#/dashboard/event/{{eid}}">
+            Event {{events.$getRecord(eid).eventInfo.name}}
+        </div>-->
 
-              </li>
-          </ul>
-
-      </div>
-      </ion-list>
+    <!--</div>-->
   </ion-content>
 </ion-view>
